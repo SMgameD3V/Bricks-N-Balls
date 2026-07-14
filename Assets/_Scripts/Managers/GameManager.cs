@@ -32,11 +32,11 @@ public class GameManager : MonoBehaviour
         pendingBall = ball;
     }
 
-    public void TryLaunchPendingBall()
+    public void TryLaunchPendingBall(float swipeVelocityX)
     {
         if (pendingBall == null) return;
-        pendingBall.Launch();
-        pendingBall = null;
+        pendingBall.LaunchFromSwipe(swipeVelocityX);
+        pendingBall = null; 
     }
 
     public void AddScore(int amount)
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     public void AddLife()
     {
-        lives++;
+        lives++;  
         UIManager.Instance.UpdateLives(lives);
     }
 
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     public void LoseBall(GameObject ball)
     {
         BallController[] allBalls = FindObjectsByType<BallController>(FindObjectsSortMode.None);
-        int remainingAfterThis = allBalls.Length - 1; // this ball hasn't actually been destroyed yet
+        int remainingAfterThis = allBalls.Length - 1;
 
         Destroy(ball);
 

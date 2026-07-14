@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3919779002189068522, guid: f230e02d19b8efc4290cd0403454dca3, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -175,3 +175,5 @@ MonoBehaviour:
   wallJitterDegrees: 6
   minBounceComponent: 0.25
   attachOffsetY: 0.45
+  maxLaunchAngle: 55
+  swipeVelocityForMaxAngle: 6

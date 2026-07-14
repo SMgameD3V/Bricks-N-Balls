@@ -8,6 +8,8 @@ public class BallController : MonoBehaviour
     [SerializeField] private float wallJitterDegrees = 6f;
     [SerializeField] private float minBounceComponent = 0.25f;
     [SerializeField] private float attachOffsetY = 0.45f;
+    [SerializeField] private float maxLaunchAngle = 55f;
+    [SerializeField] private float swipeVelocityForMaxAngle = 6f;
 
     private Rigidbody2D rb;
     private float currentSpeed;
@@ -65,9 +67,11 @@ public class BallController : MonoBehaviour
         currentSpeed = baseSpeed;
     }
 
-    public void Launch()
+    public void LaunchFromSwipe(float swipeVelocityX)
     {
-        float angle = Random.Range(-25f, 25f);
+        float factor = Mathf.Clamp(swipeVelocityX / swipeVelocityForMaxAngle, -1f, 1f);
+        float angle = factor * maxLaunchAngle;
+
         Vector2 dir = Quaternion.Euler(0, 0, angle) * Vector2.up;
         LaunchInDirection(dir, currentSpeed);
     }
@@ -108,6 +112,7 @@ public class BallController : MonoBehaviour
         WallBounceSurface wall = collision.collider.GetComponent<WallBounceSurface>();
         if (wall != null)
         {
+            AudioManager.Instance.PlayPaddleBounce();
             HandleWallBounce(wall.orientation);
             return;
         }
@@ -121,7 +126,7 @@ public class BallController : MonoBehaviour
         float offset = (transform.position.x - paddle.transform.position.x) / paddleHalfWidth;
         offset = Mathf.Clamp(offset, -1f, 1f);
 
-        float angle = offset * maxBounceAngleFromPaddle;
+        float angle = -offset * maxBounceAngleFromPaddle;
         angle += Random.Range(-paddleJitterDegrees, paddleJitterDegrees);
 
         Vector2 dir = Quaternion.Euler(0, 0, angle) * Vector2.up;

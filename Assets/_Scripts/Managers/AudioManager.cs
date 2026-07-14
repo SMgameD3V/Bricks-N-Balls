@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip paddleBounceSfx;
+    [SerializeField] private AudioClip brickHitSfx;    // NEW — plays on non-breaking hits
     [SerializeField] private AudioClip brickBreakSfx;
     [SerializeField] private AudioClip powerupCollectSfx;
 
@@ -21,6 +22,7 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlayPaddleBounce() => audioSource.PlayOneShot(paddleBounceSfx);
+    public void PlayBrickHit() => audioSource.PlayOneShot(brickHitSfx != null ? brickHitSfx : brickBreakSfx);
     public void PlayBrickBreak() => audioSource.PlayOneShot(brickBreakSfx);
     public void PlayPowerupCollect() => audioSource.PlayOneShot(powerupCollectSfx);
 }

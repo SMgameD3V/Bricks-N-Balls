@@ -8,10 +8,10 @@ public class Brick : MonoBehaviour
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] private float explosionRadius = 1.2f;
 
-    [Header("Crack-stage children, in order (leave empty for Normal/Heal)")]
+    [Header("Crack-stage children")]
     [SerializeField] private GameObject[] crackStages;
 
-    [Header("Each brick rolls its own drop chance in this range at spawn")]
+    [Header("Powerup drop chance")]
     [SerializeField] [Range(0f, 1f)] private float minDropChance = 0f;
     [SerializeField] [Range(0f, 1f)] private float maxDropChance = 1f;
 
@@ -48,9 +48,16 @@ public class Brick : MonoBehaviour
         if (!collision.collider.CompareTag("Ball")) return;
 
         hitPoints--;
-        UpdateCrackVisual();
 
-        if (hitPoints <= 0) BreakBrick();
+        if (hitPoints <= 0)
+        {
+            BreakBrick();
+        }
+        else
+        {
+            AudioManager.Instance.PlayBrickHit(); // only plays on a hit that DOESN'T break the brick
+            UpdateCrackVisual();
+        }
     }
 
     private void UpdateCrackVisual()
@@ -79,6 +86,7 @@ public class Brick : MonoBehaviour
             TriggerExplosion();
 
         if (brickType == BrickType.Heal)
+            AudioManager.Instance.PlayPowerupCollect();
             GameManager.Instance.AddLife();
 
         if (Random.value <= powerupDropChance)
