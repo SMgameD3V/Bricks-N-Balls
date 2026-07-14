@@ -8,6 +8,7 @@ public class Brick : MonoBehaviour
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] private float explosionRadius = 1.2f;
     [SerializeField] private GameObject explosionVfxPrefab;
+    [SerializeField] private int brickScore = 5;
 
     [Header("Crack-stage children")]
     [SerializeField] private GameObject[] crackStages;
@@ -87,13 +88,15 @@ public class Brick : MonoBehaviour
             TriggerExplosion();
 
         if (brickType == BrickType.Heal)
+        {
             AudioManager.Instance.PlayPowerupCollect();
             GameManager.Instance.AddLife();
+        }
 
         if (Random.value <= powerupDropChance)
             PowerupSpawner.Instance.SpawnRandomPowerup(transform.position);
 
-        GameManager.Instance.AddScore(10);
+        GameManager.Instance.AddScore(brickScore);
         GameManager.Instance.BrickDestroyed();
         Destroy(gameObject);
     }
@@ -123,7 +126,7 @@ public class Brick : MonoBehaviour
         if (destroyEffect != null)
             Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
-        GameManager.Instance.AddScore(10);
+        GameManager.Instance.AddScore(brickScore);
         GameManager.Instance.BrickDestroyed();
         Destroy(gameObject);
     }
